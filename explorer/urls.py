@@ -7,8 +7,8 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('',
     # Example:
     # (r'^file_explorer/', include('file_explorer.foo.urls')),
-    (r'explorer/', include('file_explorer.explorer.urls')),
-    #(r'explorer/', 'explorer.views.hw')
+    (r'^$','explorer.views.hw')
+    #(r'^explorer/', include('file_explorer.foo.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
