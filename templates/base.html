@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<title>Directory Listing</title>
+	</head>
+	<body>
+		<h1>Hello, world!</h1>
+		<table width=80% border=1>
+			<!-- directories -->
+			{% for key,value in data.0.items %}
+			<tr align="left">
+				<td with=50%><a href='{{ key }}'>{{ key }}</a></td>
+				<td width=15%>{{ value.0 }}</td>
+				<td width=15%> </td>
+				<td width=20%><a href="{{ key }}/zip">Download zip</a></td>
+			</tr>		
+			{% endfor %}
+			<!-- directories -->
+			{% for key,value in data.1.items %}
+			<tr align="left">
+				<td width=50%>{{ key }}</td>
+				<td width=15%>{{ value.0 }}</td>
+				<td width=15%>{{ value.1 }} Bytes</td>
+				<td width=20%><a href="{{ key }}/zip">Download zip</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+	
+	
+	
+	
+	
+</html>
