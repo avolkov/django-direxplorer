@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # (r'^file_explorer/', include('file_explorer.foo.urls')),
     (r'^$','explorer.views.hw'),
     (r'^%s/zip$' % file_pattern, 'explorer.views.zip'),
+    (r'^%s/raw$' % file_pattern, 'explorer.views.raw'),
     (r'^%s$' % file_pattern, 'explorer.views.explore')
     #(r'^explorer/', include('file_explorer.foo.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:

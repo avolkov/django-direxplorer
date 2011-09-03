@@ -1,11 +1,14 @@
 import os
 import zipfile
+import mimetypes as fe_mime
 from pprint import pprint as pp
 from collections import OrderedDict
 
 
 #def traverse_path(path):
 #    os.walk(path)
+
+fe_mime.init()
 
 root_path = '/home/alex/tmp'
 
@@ -25,10 +28,9 @@ def listdir(root_path, rel_path=''):
     files.sort()
     directories.sort()
     
-    file_dict = OrderedDict([(x, [os.path.join(rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
-    dir_dict = OrderedDict([(x, [os.path.join(rel_path, x), 'dir'])for x in directories])
+    file_dict = OrderedDict([(x, [os.path.join("/explorer", rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
+    dir_dict = OrderedDict([(x, [os.path.join("/explorer", rel_path, x), 'dir'])for x in directories])
     ###use functools here to modify the paths
-    
     
     #import ipdb; ipdb.set_trace()   
     return (dir_dict, file_dict)
