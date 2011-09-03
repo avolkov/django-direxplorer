@@ -10,8 +10,8 @@ from collections import OrderedDict
 root_path = '/home/alex/tmp'
 
 ##refactor with basepath / relative_path
-def listdir(mypath, relative_bit=''): 
-    
+def listdir(root_path, rel_path=''): 
+    mypath = os.path.join(root_path, rel_path)
     everything = os.listdir(mypath)  
     fullpaths = map(lambda x: os.path.join(mypath,x),  everything)
     
@@ -25,8 +25,8 @@ def listdir(mypath, relative_bit=''):
     files.sort()
     directories.sort()
     
-    file_dict = OrderedDict([(x, ['file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
-    dir_dict = OrderedDict([(x, ['dir'])for x in directories])
+    file_dict = OrderedDict([(x, [os.path.join(rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
+    dir_dict = OrderedDict([(x, [os.path.join(rel_path, x), 'dir'])for x in directories])
     ###use functools here to modify the paths
     
     

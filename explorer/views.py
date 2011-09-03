@@ -24,7 +24,6 @@ def zip(request):
     #return render_to_response("Returning zipped data")
 def explore(request):
     url_path = "/".join(request.META['PATH_INFO'].split('/')[2:])
-    fs_path = os.path.join(root_path, url_path)
     #import ipdb; ipdb.set_trace()
     #return HttpResponse("Exploring: %s" % file_path)
-    return render_to_response('base.html', {'data': listdir(fs_path, url_path)}, context_instance=RequestContext(request))
+    return render_to_response('base.html', {'data': listdir(root_path, url_path)}, context_instance=RequestContext(request))
