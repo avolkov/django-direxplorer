@@ -11,7 +11,7 @@
 				<td with=50%><a href='{{ value.0 }}'>{{ key }}</a></td>
 				<td width=15%>{{ value.1 }}</td>
 				<td width=15%> </td>
-				<td width=20%><a href="{{ key }}/zip">Download zip</a></td>
+				<td width=20%><a href="{{ value.0 }}/zip">{{ key }}.zip</a></td>
 			</tr>		
 			{% endfor %}
 			<!-- directories -->
@@ -20,7 +20,7 @@
 				<td width=50%><a href='{{ value.0 }}/raw'>{{ key }}</a></td>
 				<td width=15%>{{ value.1 }}</td>
 				<td width=15%>{{ value.2 }} Bytes</td>
-				<td width=20%><a href="{{ key }}/zip">Download zip</a></td>
+				<td width=20%><a href="{{ value.0 }}/zip">{{ key }}.zip</a></td>
 			</tr>
 			{% endfor %}
 		</table>

@@ -3,7 +3,7 @@ import zipfile
 import mimetypes as fe_mime
 from pprint import pprint as pp
 from collections import OrderedDict
-
+from StringIO import StringIO
 
 #def traverse_path(path):
 #    os.walk(path)
@@ -57,3 +57,22 @@ def arc_zip(path, filename):
         for f in files:
             zip_obj.write(os.path.join(directory, f))
     zip_obj.close()
+
+def arc_sio_zip(root_path, rel_path):
+    sio_obj = StringIO()
+    pwd = os.getcwd()
+    dest_dir = rel_path.split("/")[-1]
+    
+    os.chdir(os.path.join(root_path, "/".join(rel_path.split("/")[:-1])))
+    zip_obj = zipfile.ZipFile(sio_obj, 'w', zipfile.ZIP_DEFLATED)
+    if os.path.isdir(dest_dir):
+        for directory,_,files in (k for k in os.walk(dest_dir) if len(k[2])> 0):
+            for f in files:
+                zip_obj.write(os.path.join(directory, f))
+    elif os.path.isfile(dest_dir):
+        zip_obj.write(os.path.join(dest_dir))
+    
+    zip_obj.close()
+    sio_obj.seek(0)
+    os.chdir(pwd)
+    return sio_obj
