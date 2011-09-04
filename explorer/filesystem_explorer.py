@@ -1,10 +1,10 @@
 import os
 import zipfile
 import mimetypes as fe_mime
-from pprint import pprint as pp
 from collections import OrderedDict
 from StringIO import StringIO
 
+from models import ExplorerSite
 #def traverse_path(path):
 #    os.walk(path)
 
@@ -13,8 +13,9 @@ fe_mime.init()
 root_path = '/home/alex/tmp'
 
 ##refactor with basepath / relative_path
-def listdir(root_path, rel_path=''): 
+def listdir(root_path, rel_path='', site_name=''): 
     mypath = os.path.join(root_path, rel_path)
+    #import ipdb; ipdb.set_trace()
     everything = os.listdir(mypath)  
     fullpaths = map(lambda x: os.path.join(mypath,x),  everything)
     
@@ -28,8 +29,8 @@ def listdir(root_path, rel_path=''):
     files.sort()
     directories.sort()
     
-    file_dict = OrderedDict([(x, [os.path.join("/explorer", rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
-    dir_dict = OrderedDict([(x, [os.path.join("/explorer", rel_path, x), 'dir'])for x in directories])
+    file_dict = OrderedDict([(x, [os.path.join("/explorer/%s" % site_name, rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
+    dir_dict = OrderedDict([(x, [os.path.join("/explorer/%s" % site_name, rel_path, x), 'dir'])for x in directories])
     ###use functools here to modify the paths
     
     #import ipdb; ipdb.set_trace()   
@@ -76,3 +77,8 @@ def arc_sio_zip(root_path, rel_path):
     sio_obj.seek(0)
     os.chdir(pwd)
     return sio_obj
+def get_site_map():
+    site_maps = {}
+    for site in ExplorerSite.objects.all():
+        site_maps[site.web_url] = site.fs_path
+    return site_maps
