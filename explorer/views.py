@@ -21,7 +21,7 @@ def get_site_url(request):
     if site_name not in get_site_map().keys():
         return None
     root_path = get_site_map()[site_name]
-    url_path = "/".join(request.META['PATH_INFO'].split('/')[3:])
+    url_path = request.META['PATH_INFO'].split('/')[3:]
     #import ipdb; ipdb.set_trace()
     return (site_name, root_path, url_path)
 
@@ -30,6 +30,8 @@ def zip(request):
     if site_info is None:
         return HttpResponse("Error, invalid site url")
     site_name,root_path, url_path = site_info
+    import ipdb; ipdb.set_trace()
+    url_path = "/".join(url_path[:-1])
     sio_zip = arc_sio_zip(root_path, url_path)
     response = HttpResponse(mimetype='application/zip')
     response['content-Disposition'] = "attachment; filename=%s.zip" % request.path.split("/")[-2]
@@ -37,7 +39,11 @@ def zip(request):
     sio_zip.close()    
     return response
 def raw(request):
-    url_path = "/".join(request.META['PATH_INFO'].split('/')[2:-1])
+    site_info = get_site_url(request)
+    if site_info is None:
+        return HttpResponse("Error, invalid site url")
+    site_name,root_path, url_path = site_info
+    url_path = "/".join(url_path[:-1])
     fullpath = os.path.join(root_path, url_path)
     response = HttpResponse(open(fullpath, 'r'),mimetype=fe_mime.guess_type(url_path)[0])
     response['content-Disposition'] = "attachment; filename=%s" % fullpath.split('/')[-1]
@@ -48,4 +54,4 @@ def explore(request):
     if site_info is None:
         return HttpResponse("Error, invalid site url")
     site_name,root_path, url_path = site_info
-    return render_to_response('base.html', {'data': listdir(root_path, url_path, site_name)}, context_instance=RequestContext(request))
+    return render_to_response('base.html', {'data': listdir(root_path, "/".join(url_path), site_name)}, context_instance=RequestContext(request))
