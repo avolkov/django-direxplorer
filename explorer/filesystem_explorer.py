@@ -4,6 +4,8 @@ import mimetypes as fe_mime
 from collections import OrderedDict
 from StringIO import StringIO
 
+from django.conf import settings
+
 from models import ExplorerSite
 #def traverse_path(path):
 #    os.walk(path)
@@ -25,9 +27,8 @@ def listdir(root_path, rel_path='', site_name=''):
     
     files.sort()
     directories.sort()
-    
-    file_dict = OrderedDict([(x, [os.path.join("/explorer/%s" % site_name, rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
-    dir_dict = OrderedDict([(x, [os.path.join("/explorer/%s" % site_name, rel_path, x), 'dir'])for x in directories])
+    file_dict = OrderedDict([(x, [os.path.join("/%s/%s" % (settings.EXPLORER_URL, site_name), rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
+    dir_dict = OrderedDict([(x, [os.path.join("/%s/%s" % (settings.EXPLORER_URL, site_name), rel_path, x), 'dir'])for x in directories])
     ###use functools here to modify the paths
     
     #import ipdb; ipdb.set_trace()   

@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 
+
 file_pattern = "[a-zA-Z0-9/-_.]+"
 
 urlpatterns = patterns('',
