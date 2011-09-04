@@ -3,7 +3,6 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.template import Context, Template
-from django.core.files.temp import NamedTemporaryFile
 
 
 from filesystem_explorer import listdir, root_path, fe_mime, arc_sio_zip
@@ -18,7 +17,6 @@ def hw(request):
 
 def zip(request):
     url_path = "/".join(request.META['PATH_INFO'].split('/')[2:-1])
-    #import ipdb; ipdb.set_trace()
     sio_zip = arc_sio_zip(root_path, url_path)
     response = HttpResponse(mimetype='application/zip')
     response['content-Disposition'] = "attachment; filename=%s.zip" % request.path.split("/")[-2]
