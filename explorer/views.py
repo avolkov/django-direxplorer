@@ -3,34 +3,27 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.template import Context, Template
+from django.contrib.auth.decorators import login_required
 
-
-from filesystem_explorer import listdir, root_path, fe_mime, arc_sio_zip, get_site_map
+from filesystem_explorer import listdir, fe_mime, arc_sio_zip, get_site_map
 
 import os.path
 
 
-###Get all admin objects
-
-
-
-###replace root_path variable with database values
-## refactor two leading lines in functions zip and raw into a separate function
 def get_site_url(request):
     site_name = request.META['PATH_INFO'].split('/')[2]
     if site_name not in get_site_map().keys():
         return None
     root_path = get_site_map()[site_name]
     url_path = request.META['PATH_INFO'].split('/')[3:]
-    #import ipdb; ipdb.set_trace()
     return (site_name, root_path, url_path)
 
+@login_required
 def zip(request):
     site_info = get_site_url(request)
     if site_info is None:
         return HttpResponse("Error, invalid site url")
     site_name,root_path, url_path = site_info
-    import ipdb; ipdb.set_trace()
     url_path = "/".join(url_path[:-1])
     sio_zip = arc_sio_zip(root_path, url_path)
     response = HttpResponse(mimetype='application/zip')
@@ -38,6 +31,8 @@ def zip(request):
     response.write(sio_zip.read())
     sio_zip.close()    
     return response
+
+@login_required
 def raw(request):
     site_info = get_site_url(request)
     if site_info is None:
@@ -49,6 +44,8 @@ def raw(request):
     response['content-Disposition'] = "attachment; filename=%s" % fullpath.split('/')[-1]
     response['Content-Length'] = os.path.getsize(fullpath)
     return response
+
+@login_required
 def explore(request):
     site_info = get_site_url(request)
     if site_info is None:

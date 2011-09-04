@@ -3,7 +3,8 @@
 		<title>Directory Listing</title>
 	</head>
 	<body>
-		<h1>Hello, world!</h1>
+		{% block content %}
+		<h3>Directory listing</h3>
 		<table width=80% border=1>
 			<!-- directories -->
 			{% for key,value in data.0.items %}
@@ -24,6 +25,7 @@
 			</tr>
 			{% endfor %}
 		</table>
+		{% endblock %}
 	</body>
 	
 	

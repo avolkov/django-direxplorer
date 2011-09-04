@@ -10,12 +10,9 @@ from models import ExplorerSite
 
 fe_mime.init()
 
-root_path = '/home/alex/tmp'
-
 ##refactor with basepath / relative_path
 def listdir(root_path, rel_path='', site_name=''): 
     mypath = os.path.join(root_path, rel_path)
-    #import ipdb; ipdb.set_trace()
     everything = os.listdir(mypath)  
     fullpaths = map(lambda x: os.path.join(mypath,x),  everything)
     
