@@ -2,11 +2,14 @@ import os
 import zipfile
 import mimetypes as fe_mime
 from collections import OrderedDict
+from functools import partial
+
 
 from django.conf import settings
 
 from models import ExplorerSite
 fe_mime.init()
+
 
 
 def listdir(root_path, rel_path='', site_name=''):
@@ -24,10 +27,17 @@ def listdir(root_path, rel_path='', site_name=''):
     
     files.sort()
     directories.sort()
-    file_dict = OrderedDict([(x, [os.path.join("/%s/%s" % (settings.EXPLORER_URL, site_name), rel_path, x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
-    dir_dict = OrderedDict([(x, [os.path.join("/%s/%s" % (settings.EXPLORER_URL, site_name), rel_path, x), 'dir'])for x in directories])
-       
-    return (dir_dict, file_dict)
+    
+    join_url = partial(os.path.join,"/", settings.EXPLORER_URL, site_name, rel_path)
+    file_dict = OrderedDict([(x, [join_url(x), 'file', os.path.getsize(os.path.join(mypath,x))]) for x in files])
+    dir_dict = OrderedDict([(x, [join_url(x), 'dir'])for x in directories])
+    
+    upper_level = ''
+    if rel_path:
+        upper_level = "/".join(rel_path.split("/")[:-1])
+        upper_level = os.path.join("/", settings.EXPLORER_URL, site_name, upper_level)
+        print upper_level
+    return (upper_level, dir_dict, file_dict)
 
 def arc_sio_zip(root_path, rel_path, tempfile):
     """Recursively archive files/directories using StringIO"""

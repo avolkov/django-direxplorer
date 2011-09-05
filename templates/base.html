@@ -5,9 +5,16 @@
 	<body>
 		{% block content %}
 		<h3>Directory listing</h3>
-		<table width=80% border=1>
+		<table width=100% border=1>
+			<tr>
+				{% if data.0 %}
+				<td><a href="{{ data.0 }}">Go one level up</a></td>
+				{% else %}
+				<td>This is a top level directory</td>
+				{% endif %}
+			</tr>
 			<!-- directories -->
-			{% for key,value in data.0.items %}
+			{% for key,value in data.1.items %}
 			<tr align="left">
 				<td with=50%><a href='{{ value.0 }}'>{{ key }}</a></td>
 				<td width=15%>{{ value.1 }}</td>
@@ -15,8 +22,8 @@
 				<td width=20%><a href="{{ value.0 }}/zip">{{ key }}.zip</a></td>
 			</tr>		
 			{% endfor %}
-			<!-- directories -->
-			{% for key,value in data.1.items %}
+			<!-- files -->
+			{% for key,value in data.2.items %}
 			<tr align="left">
 				<td width=50%><a href='{{ value.0 }}/raw'>{{ key }}</a></td>
 				<td width=15%>{{ value.1 }}</td>
