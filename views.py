@@ -28,10 +28,9 @@ def zip(request):
     site_name,root_path, url_path = site_info
     url_path = "/".join(url_path[:-1])
     sio_zip = arc_sio_zip(root_path, url_path)
-    response = HttpResponse(mimetype='application/zip')
+    response = HttpResponse(open(sio_zip.name, 'r'), mimetype='application/zip')
     response['content-Disposition'] = "attachment; filename=%s.zip" % request.path.split("/")[-2]
-    response.write(sio_zip.read())
-    sio_zip.close()    
+    response['Content-Length'] = os.path.getsize(sio_zip.name)
     return response
 
 @login_required
