@@ -11,6 +11,7 @@ import os.path
 
 
 def get_site_url(request):
+    """Parse url information"""
     site_name = request.META['PATH_INFO'].split('/')[2]
     if site_name not in get_site_map().keys():
         return None
@@ -20,6 +21,7 @@ def get_site_url(request):
 
 @login_required
 def zip(request):
+    """Zip up files/directories"""
     site_info = get_site_url(request)
     if site_info is None:
         return HttpResponse("Error, invalid site url")
@@ -34,6 +36,7 @@ def zip(request):
 
 @login_required
 def raw(request):
+    """Serve raw files"""
     site_info = get_site_url(request)
     if site_info is None:
         return HttpResponse("Error, invalid site url")
@@ -47,6 +50,7 @@ def raw(request):
 
 @login_required
 def explore(request):
+    """Display directory contents"""
     site_info = get_site_url(request)
     if site_info is None:
         return HttpResponse("Error, invalid site url")
