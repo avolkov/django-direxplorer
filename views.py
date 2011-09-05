@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.template import Context, Template
 from django.contrib.auth.decorators import login_required
+from django.core.files.temp import NamedTemporaryFile
+
 
 from filesystem_explorer import listdir, fe_mime, arc_sio_zip, get_site_map
 
@@ -27,7 +29,7 @@ def zip(request):
         return HttpResponse("Error, invalid site url")
     site_name,root_path, url_path = site_info
     url_path = "/".join(url_path[:-1])
-    sio_zip = arc_sio_zip(root_path, url_path)
+    sio_zip = arc_sio_zip(root_path, url_path, NamedTemporaryFile(mode='w'))
     response = HttpResponse(open(sio_zip.name, 'r'), mimetype='application/zip')
     response['content-Disposition'] = "attachment; filename=%s.zip" % request.path.split("/")[-2]
     response['Content-Length'] = os.path.getsize(sio_zip.name)

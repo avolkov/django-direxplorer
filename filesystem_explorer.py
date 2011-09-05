@@ -2,8 +2,6 @@ import os
 import zipfile
 import mimetypes as fe_mime
 from collections import OrderedDict
-from StringIO import StringIO
-from django.core.files.temp import NamedTemporaryFile
 
 from django.conf import settings
 
@@ -31,9 +29,9 @@ def listdir(root_path, rel_path='', site_name=''):
        
     return (dir_dict, file_dict)
 
-def arc_sio_zip(root_path, rel_path):
+def arc_sio_zip(root_path, rel_path, tempfile):
     """Recursively archive files/directories using StringIO"""
-    sio_obj = NamedTemporaryFile(mode='w')
+    sio_obj = tempfile
     pwd = os.getcwd()
     dest_dir = rel_path.split("/")[-1]
     
