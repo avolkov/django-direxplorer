@@ -28,6 +28,7 @@ Installation
 		from django.conf import settings
  	b. A urlpattern
  		(r'^%s/' % settings.EXPLORER_URL, include('django-direxplorer.urls')),
+ 		(r'^accounts/login/$', 'django.contrib.auth.views.login'),
  4. Run **python manage.py syncdb**
  5. Go to admin interface -> Explorer Sites and add explorer site
  	a. Web URL: url for each site i.e. http://django-site/<EXPLORER_URL>/<WEB_URL>

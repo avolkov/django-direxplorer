@@ -10,7 +10,7 @@ from django.core.files.temp import NamedTemporaryFile
 from filesystem_explorer import listdir, fe_mime, arc_sio_zip, get_site_map
 
 import os.path
-
+import urllib
 
 def get_site_url(request):
     """Parse url information"""
@@ -31,7 +31,7 @@ def zip(request):
     url_path = "/".join(url_path[:-1])
     sio_zip = arc_sio_zip(root_path, url_path, NamedTemporaryFile(mode='w'))
     response = HttpResponse(open(sio_zip.name, 'r'), mimetype='application/zip')
-    response['content-Disposition'] = "attachment; filename=%s.zip" % request.path.split("/")[-2]
+    response['content-Disposition'] = "attachment; filename=%s.zip" % urllib.quote(request.path.split("/")[-2])
     response['Content-Length'] = os.path.getsize(sio_zip.name)
     return response
 
@@ -45,7 +45,7 @@ def raw(request):
     url_path = "/".join(url_path[:-1])
     fullpath = os.path.join(root_path, url_path)
     response = HttpResponse(open(fullpath, 'r'),mimetype=fe_mime.guess_type(url_path)[0])
-    response['content-Disposition'] = "attachment; filename=%s" % fullpath.split('/')[-1]
+    response['content-Disposition'] = "attachment; filename=%s" % urllib.quote(fullpath.split('/')[-1])
     response['Content-Length'] = os.path.getsize(fullpath)
     return response
 
