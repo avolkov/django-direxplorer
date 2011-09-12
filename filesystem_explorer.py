@@ -12,9 +12,14 @@ fe_mime.init()
 
 
 
+def check_path(root_path, path_to_test):
+    return path_to_test.startswith(roo) 
+
 def listdir(root_path, rel_path='', site_name=''):
     """Display directories and walk through their content""" 
     mypath = os.path.join(root_path, rel_path)
+    if not mypath.startswith(root_path):
+        return None
     everything = os.listdir(mypath)  
     fullpaths = map(lambda x: os.path.join(mypath,x),  everything)
     
@@ -40,12 +45,14 @@ def listdir(root_path, rel_path='', site_name=''):
     return (upper_level, dir_dict, file_dict)
 
 def arc_sio_zip(root_path, rel_path, tempfile):
-    """Recursively archive files/directories using StringIO"""
+    """Recursively archive files/directories temporarily storing compressed content in /tmp"""
     sio_obj = tempfile
     pwd = os.getcwd()
     dest_dir = rel_path.split("/")[-1]
-    
-    os.chdir(os.path.join(root_path, "/".join(rel_path.split("/")[:-1])))
+    mypath = os.path.join(root_path, "/".join(rel_path.split("/")[:-1]))
+    if not mypath.startswith(root_path):
+        return None
+    os.chdir(mypath)
     zip_obj = zipfile.ZipFile(sio_obj, 'w', zipfile.ZIP_DEFLATED)
     if os.path.isdir(dest_dir):
         for directory,_,files in (k for k in os.walk(dest_dir) if len(k[2])> 0):
