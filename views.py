@@ -31,7 +31,8 @@ def zip(request):
     url_path = "/".join(url_path[:-1])
     sio_zip = arc_sio_zip(root_path, url_path, NamedTemporaryFile(mode='w'))
     response = HttpResponse(open(sio_zip.name, 'r'), mimetype='application/zip')
-    response['content-Disposition'] = "attachment; filename=%s.zip" % urllib.quote(request.path.split("/")[-2])
+    unicode_filename = request.path.split("/")[-2]
+    response['content-Disposition'] = "attachment; filename=%s.zip" % urllib.quote(unicode_filename.encode('utf-8'))
     response['Content-Length'] = os.path.getsize(sio_zip.name)
     return response
 
@@ -45,7 +46,8 @@ def raw(request):
     url_path = "/".join(url_path[:-1])
     fullpath = os.path.join(root_path, url_path)
     response = HttpResponse(open(fullpath, 'r'),mimetype=fe_mime.guess_type(url_path)[0])
-    response['content-Disposition'] = "attachment; filename=%s" % urllib.quote(fullpath.split('/')[-1])
+    unicode_filename = fullpath.split('/')[-1]
+    response['content-Disposition'] = "attachment; filename=%s" % urllib.quote(unicode_filename.encode('utf-8'))
     response['Content-Length'] = os.path.getsize(fullpath)
     return response
 
